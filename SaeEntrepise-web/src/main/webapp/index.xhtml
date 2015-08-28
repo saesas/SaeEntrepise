@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form>
+                <h1><h:outputText value="Create/Edit"/></h1>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Id:" for="id" />
+                    <h:inputText id="id" value="#{convocatoriaController.convocatoria.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
+                    <h:outputLabel value="Codigo:" for="codigo" />
+                    <h:inputText id="codigo" value="#{convocatoriaController.convocatoria.codigo}" title="Codigo" />
+                    <h:outputLabel value="Asunto:" for="asunto" />
+                    <h:inputText id="asunto" value="#{convocatoriaController.convocatoria.asunto}" title="Asunto" />
+                    <h:outputLabel value="Descripcion:" for="descripcion" />
+                    <h:inputText id="descripcion" value="#{convocatoriaController.convocatoria.descripcion}" title="Descripcion" />
+                    <h:outputLabel value="FechaRegistro:" for="fechaRegistro" />
+                    <h:inputText id="fechaRegistro" value="#{convocatoriaController.convocatoria.fechaRegistro}" title="FechaRegistro" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="Url:" for="url" />
+                    <h:inputText id="url" value="#{convocatoriaController.convocatoria.url}" title="Url" />
+                    <h:outputLabel value="Plazo:" for="plazo" />
+                    <h:inputText id="plazo" value="#{convocatoriaController.convocatoria.plazo}" title="Plazo" />
+                    <h:outputLabel value="PresupuestoOficial:" for="presupuestoOficial" />
+                    <h:inputText id="presupuestoOficial" value="#{convocatoriaController.convocatoria.presupuestoOficial}" title="PresupuestoOficial" />
+                    <h:outputLabel value="ValorPresentado:" for="valorPresentado" />
+                    <h:inputText id="valorPresentado" value="#{convocatoriaController.convocatoria.valorPresentado}" title="ValorPresentado" />
+                    <h:outputLabel value="ValorReferencia:" for="valorReferencia" />
+                    <h:inputText id="valorReferencia" value="#{convocatoriaController.convocatoria.valorReferencia}" title="ValorReferencia" />
+                    <h:outputLabel value="Estado:" for="estado" />
+                    <h:inputText id="estado" value="#{convocatoriaController.convocatoria.estado}" title="Estado" />
+                    <h:outputLabel value="IdUsuario:" for="idUsuario" />
+                    <h:inputText id="idUsuario" value="#{convocatoriaController.convocatoria.idUsuario}" title="IdUsuario" />
+                    <h:outputLabel value="IdLugarEjecucion:" for="idLugarEjecucion" />
+                    <h:inputText id="idLugarEjecucion" value="#{convocatoriaController.convocatoria.idLugarEjecucion}" title="IdLugarEjecucion" />
+                    <h:outputLabel value="DireccionEjecucion:" for="direccionEjecucion" />
+                    <h:inputText id="direccionEjecucion" value="#{convocatoriaController.convocatoria.direccionEjecucion}" title="DireccionEjecucion" />
+                    <h:outputLabel value="IdRazonSocial:" for="idRazonSocial" />
+                    <h:inputText id="idRazonSocial" value="#{convocatoriaController.convocatoria.idRazonSocial}" title="IdRazonSocial" />
+                    <h:outputLabel value="EntidadContratante:" for="entidadContratante" />
+                    <h:inputText id="entidadContratante" value="#{convocatoriaController.convocatoria.entidadContratante}" title="EntidadContratante" />
+                    <h:outputLabel value="IdTipoProyecto:" for="idTipoProyecto" />
+                    <h:selectOneMenu id="idTipoProyecto" value="#{convocatoriaController.convocatoria.idTipoProyecto}" title="IdTipoProyecto" >
+                        <!-- TODO: update below reference to list of available items-->
+                        <f:selectItems value="#{fixme}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="IdTipoProceso:" for="idTipoProceso" />
+                    <h:selectOneMenu id="idTipoProceso" value="#{convocatoriaController.convocatoria.idTipoProceso}" title="IdTipoProceso" >
+                        <!-- TODO: update below reference to list of available items-->
+                        <f:selectItems value="#{fixme}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="IdFormaPago:" for="idFormaPago" />
+                    <h:selectOneMenu id="idFormaPago" value="#{convocatoriaController.convocatoria.idFormaPago}" title="IdFormaPago" >
+                        <!-- TODO: update below reference to list of available items-->
+                        <f:selectItems value="#{fixme}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+               
+                    <h1><h:outputText value="List"/></h1>
+                    <h:commandButton type="submit" action="#{convocatoriaController.listar}"  immediate="true" value="Listar" />
+                    <h:dataTable value="#{convocatoriaController.convocatorias}" var="item">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Codigo"/>
+                            </f:facet>
+                            <h:outputText value="#{item.codigo}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Asunto"/>
+                            </f:facet>
+                            <h:outputText value="#{item.asunto}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Descripcion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="FechaRegistro"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaRegistro}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Url"/>
+                            </f:facet>
+                            <h:outputText value="#{item.url}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Plazo"/>
+                            </f:facet>
+                            <h:outputText value="#{item.plazo}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="PresupuestoOficial"/>
+                            </f:facet>
+                            <h:outputText value="#{item.presupuestoOficial}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="ValorPresentado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.valorPresentado}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="ValorReferencia"/>
+                            </f:facet>
+                            <h:outputText value="#{item.valorReferencia}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Estado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="IdUsuario"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idUsuario}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="IdLugarEjecucion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idLugarEjecucion}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="DireccionEjecucion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.direccionEjecucion}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="IdRazonSocial"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idRazonSocial}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="EntidadContratante"/>
+                            </f:facet>
+                            <h:outputText value="#{item.entidadContratante}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="IdTipoProyecto"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idTipoProyecto}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="IdTipoProceso"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idTipoProceso}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="IdFormaPago"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idFormaPago}"/>
+                        </h:column>    
+                    </h:dataTable>
+
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
+
