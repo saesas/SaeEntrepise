@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.sae.persistence.dao;
 
 import com.sae.persistence.domain.Convocatoria;
@@ -30,5 +29,7 @@ public interface ConvocatoriaFacadeLocal {
     List<Convocatoria> findRange(int[] range);
 
     int count();
-    
+
+    List<Convocatoria> getListConvocatoriaByRazonSocialBd(int idRazonSocial);
+
 }

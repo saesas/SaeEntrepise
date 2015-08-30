@@ -1,0 +1,65 @@
+
+#f1{
+    width: 100%;
+    height: 80%;
+
+}
+
+.title-sesion h2{
+    text-align: center;
+    background: #065E84;
+    color: white;
+    line-height: 50px;
+    margin-top: 0px;
+    font-size: 20px;
+}
+
+input[type=text].txt-usuario,input[type=password].txt-clave{
+    padding: 10px;
+    width: 100%;
+    border-radius:0px 0px 0px 0px;
+    -webkit-box-shadow: inset 0 0px 0px #8f8f8f; 
+     box-shadow: inset 0 0px 0px #8f8f8f;
+    margin-bottom: 15px;
+}
+
+
+select.slc-iniciar{
+    padding: 10px;
+    width: 100%;
+    border-radius:0px 0px 0px 0px;
+    margin-bottom: 15px;
+}
+
+button.btn-iniciar{
+    width: 100%; 
+    background: white; 
+    color: #065E84; 
+    border-radius:0px 0px 0px 0px;
+    cursor: pointer;
+}
+
+
+.tbl-iniciar table{  
+    text-align: center;
+    font-family: 'Arial';
+}
+
+#content{                
+    height: 90%;             
+}
+
+#footer{
+    height: 10%;
+    position: fixed;
+    bottom: 0px;
+    width: 100%
+}
+
+@media screen and (max-width: 600px) {
+    img.logo-login {
+        width: 50%;
+        height: 40%; 
+    }
+
+}

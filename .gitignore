@@ -29,3 +29,6 @@ nbproject/
 *.jar
 *.war
 *.ear
+/SaeEntrepise-ejb/target/
+/SaeEntrepise-web/target/
+/SaeEntrepise-ear/target/

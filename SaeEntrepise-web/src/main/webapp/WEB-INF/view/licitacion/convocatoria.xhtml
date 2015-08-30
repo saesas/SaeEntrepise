@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition    xmlns="http://www.w3.org/1999/xhtml"
+                   xmlns:h="http://java.sun.com/jsf/html"
+                   xmlns:f="http://java.sun.com/jsf/core"
+                   xmlns:ui="http://java.sun.com/jsf/facelets"
+                   xmlns:p="http://primefaces.org/ui"
+                   template="/WEB-INF/facelets/templates/plantilla.xhtml">
+
+
+
+    <ui:define name="content">     
+        <!--<div class="mainbody-section text-center" >-->
+        <f:metadata name="viewport" content="width=device-width, initial-scale=1.0" >
+            <!--<f:event type="preRenderView" listener="#{loginBean.permissionGeneral}"/>-->
+            <f:event type="preRenderView" listener="#{convocatoriaController.mtdLlenarListConvocatorias}"/>
+        </f:metadata>
+
+
+        <h:outputScript name="js/convocatoria.js"/>
+        <div class="container">              
+            <!-- Inicio de to do list-->              
+            <div class="col-lg-12">
+                <h:form id="form" onkeypress="return anular(event)">
+                    <p:growl id="msgs" showDetail="true" />
+                    <p:dataTable styleClass="tbl-central" reflow="true" var="convocatoria" value="#{convocatoriaController.convocatorias}" selectionMode="single"  rowKey="#{convocatoria.idConvocatoria}" 
+                                 rows="10" paginatorPosition="bottom" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" widgetVar="table-convocatoria" id="tbl-convocatoria" filteredValue="#{convocatoriaController.convocatoriasFiltro}" filterEvent="keyup"
+                                 emptyMessage="No se encontraron coincidencias" style="font-size: 13px;" selection="#{convocatoriaController.convocatoriaModel}" >
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Búsqueda avanzada: " />                                
+                                <p:inputText id="globalFilter" onkeyup="PF('table-convocatoria').filter()" style="width:150px" placeholder="Palabra clave"/>
+                                <p:commandLink id="btn-limpiar-convocatoria"  style="float:right;" disabled="true"><h:graphicImage alt="" name="images/btn-limpiar.png" style="padding-left: 10px; text-align: right;" /> </p:commandLink><p:tooltip id="tool-tip-limpiar-convocatoria" for="btn-limpiar-convocatoria" value="Limpiar" trackMouse="true"/>
+                                <p:commandLink id="btn-actualizar-convocatoria" action="registrar-convocatoria.xhtml" style="float:right;"><h:graphicImage alt="" name="images/btn-actualizar.png" style="padding-left: 10px;"/> </p:commandLink><p:tooltip id="tool-tip-actualizar-convocatoria" for="btn-actualizar-convocatoria" value="Actualizar" trackMouse="true" />
+                                <p:commandLink id="btn-eliminar-convocatoria" onclick="PF('modal-eliminar-convocatoria').show()" update=":form:pnl-eliminar-convocatoria" style="float:right;"  ><h:graphicImage alt="" name="images/btn-eliminar.png" style="padding-left: 10px;"/> </p:commandLink><p:tooltip id="tool-tip-eliminar-convocatoria" for="btn-eliminar-convocatoria" value="Eliminar" trackMouse="true"/>
+                                <p:commandLink   id="btn-agregar-convocatoria" ajax="false" action="registrar-convocatoria.xhtml?faces-redirect=true" style="float:right;"><h:graphicImage alt="" name="images/btn-agregar.png" style="padding-left: 10px;"/> </p:commandLink><p:tooltip id="tool-tip-agregar-convocatoria" for="btn-agregar-convocatoria" value="Agregar" trackMouse="true" />
+                                
+                                <!--<p:commandLink  id="btn-ver-detalles" process="tbl-convocatoria" update=":form:convocatoria-detalle"  onclick="PF('convocatoria-modal').show()" ><h:graphicImage alt="" name="images/btn-ver-detalles.png" style="padding-left: 10px;"/> </p:commandLink><p:tooltip id="tool-tip-ver-detalles" for="btn-ver-detalles" value="Ver Detalles" trackMouse="true" />-->
+<!--                                <p:commandLink  id="btn-ver-detalles-convocatoria" process="tbl-convocatoria" actionListener="#{loginBean.mtdAbrirModal}">
+                                    <f:param name="pagina" value="/view/modal/modal-prueba" />
+                                     <h:graphicImage alt="" name="images/btn-ver-detalles.png" style="padding-left: 10px;"/>
+                                </p:commandLink>-->
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column headerText="Id" sortBy="#{convocatoria.idConvocatoria}" filterBy="#{estadoConvocatoria.id}" filterMatchMode="contains" rendered="false">
+                            <h:outputText value="#{convocatoria.idConvocatoria}"/>
+                        </p:column>
+                        <p:column headerText="Código Convocatoria" filterBy="#{convocatoria.codigoConvocatoria}" filterMatchMode="contains">
+                            <h:outputText value="#{convocatoria.codigoConvocatoria}" />
+                        </p:column>
+                        <p:column headerText="Entidad Contratante" filterBy="#{convocatoria.idEntidadContratante}" filterMatchMode="contains" >
+                            <h:outputText value="#{convocatoria.idEntidadContratante}" />
+                        </p:column>
+                        <p:column headerText="Tipo Proceso" filterBy="#{convocatoria.tipoProceso}" filterMatchMode="contains">
+                            <h:outputText value="#{convocatoria.tipoProceso}" />
+                        </p:column>
+                        <p:column headerText="Url" filterBy="#{convocatoria.url}" filterMatchMode="contains">
+                            <h:outputText value="#{convocatoria.url}" />
+                        </p:column>
+                        <p:column headerText="Estado" filterBy="#{convocatoria.tipoProceso}" filterMatchMode="contains">
+                            <h:outputText value="#{convocatoria.tipoProceso}" />
+                        </p:column>
+                        <p:column headerText="Fecha" filterBy="#{convocatoria.fecha}" filterMatchMode="contains" >
+                            <h:outputText value="#{convocatoria.fecha}" >
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Analisis"  >
+                            <p:column headerText="Analisis">
+                                <p:commandLink  id="btn-agregar-analisis" ajax="false" action="analisis-convocatoria.xhtml"  ><h:graphicImage alt="" name="images/btn-agregar-lapiz.png" style="padding-left: 10px;"/> 
+                                </p:commandLink><p:tooltip id="tool-tip-agregar-analisis" for="btn-agregar-analisis" value="Agregar Análisis" trackMouse="true" />
+                            </p:column>
+                        </p:column>
+                        <!--boton para enviar a propuesta-->
+                        <!--                        <p:column headerText="Propuesta"  >
+                                                    <p:commandLink  id="btn-agregar-propuesta" ajax="false" action="propuesta.xhtml" ><h:graphicImage alt="" name="images/btn-agregar-lapiz.png" style="padding-left: 10px;"/> 
+                                                    </p:commandLink><p:tooltip id="tool-tip-agregar-propuesta" for="btn-agregar-propuesta" value="Agregar Propuesta" trackMouse="true" />
+                                                </p:column>-->
+                    </p:dataTable>
+
+                    <!--                    <p:dialog header="Detalles de la Convocatoria" widgetVar="convocatoria-modal" modal="true" showEffect="fade" hideEffect="fade" resizable="false" style="opacity: 0.8">
+                                            <div class="container">              
+                                                <p:outputPanel id="convocatoria-detalle" style="text-align:center;">
+                                                    <p:panelGrid  columns="2" rendered="#{not empty licitacionBean.licitacionModel.estadoConvocatoria}" columnClasses="value" styleClass="TFtable">
+                    
+                                                        <h:outputText styleClass="modal-ver-detalles" value="Id: " />
+                                                        <h:outputText style="text-align: right;" value="Id: " />
+                                                        <h:outputText value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.id}" />
+                    
+                                                        <h:outputText value="Identificador Convocatoria: " />
+                                                        <h:outputText value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.descripcion}" />
+                    
+                                                        <h:outputText value="Entidad Contratante: " />
+                                                        <h:outputText value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.estado}" />
+                    
+                                                        <h:outputText value="Tipo Proceso: " />
+                                                        <h:outputText value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.tipoProcesoConvocatoria.nombre}" />
+                    
+                                                        <h:outputText value="URL: " />
+                                                        <h:outputText value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.url}" />
+                    
+                                                        <h:outputText value="Estado: " />
+                                                        <h:outputText value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.estado}" />
+                    
+                                                        <h:outputText value="Fecha: " />
+                                                        <h:outputText value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.fechaRegistro}" >                                         
+                                                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                                        </h:outputText>   
+                    
+                                                        <h:outputText value="Codigo: " />
+                                                        <h:outputText value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.codigo}" />
+                                                    </p:panelGrid>
+                                                </p:outputPanel>
+                                            </div>
+                                        </p:dialog>-->
+                    <!--                    <div id="modal-eliminar-convocatoria" class="modalmask">
+                                            <div class="modalbox movedown" >
+                                                <a href="#close" title="Close" class="close">X</a>
+                                                <h3>Descripción</h3>
+                                                <p:outputPanel id="eliminar-convocatoria" style="text-align:center;"  >
+                                                    <p:panel >
+                                                        <p:outputLabel>¿Está seguro que desea eliminar este registro?</p:outputLabel><br/>
+                                                        <p:commandButton value="Si" actionListener="#{licitacionBean.updateEliminarConvocatoria}" 
+                                                                         update="msgs" onclick="window.open('#close', '_self')"/>  
+                                                        <p:commandButton value="No" onclick="window.open('#close', '_self')" type="button" />  
+                                                    </p:panel>
+                                                </p:outputPanel>
+                                            </div>                      
+                                        </div>-->
+
+                    <p:dialog header="Eliminar Convocatoria" modal="true" widgetVar="modal-eliminar-convocatoria">
+                        <div class="container ancho" >              
+                            <p:outputPanel id="pnl-eliminar-convocatoria" styleClass="panel-modal-medio">
+                                <div class="panel-modal-gris">                                    
+                                    <h3>Eliminar</h3>
+                                    <center>
+                                        <p:panel styleClass="panel-modal-interno" >
+                                            <p:outputLabel>¿Está seguro que desea eliminar este registro?</p:outputLabel><br/>
+<!--                                            <p:commandButton value="Si" actionListener="#{licitacionBean.updateEliminarConvocatoria}" 
+                                                             update="msgs" onclick="PF('modal-eliminar-convocatoria').hide()"/>  -->
+                                            <p:commandButton value="No" onclick="PF('modal-eliminar-convocatoria').hide()" type="button" />  
+                                        </p:panel>
+                                    </center>                                
+                                </div>
+                            </p:outputPanel>
+                        </div>
+                    </p:dialog>
+
+                </h:form>
+
+            </div>
+
+            <!--</div>-->
+        </div>
+
+    </ui:define>
+</ui:composition>

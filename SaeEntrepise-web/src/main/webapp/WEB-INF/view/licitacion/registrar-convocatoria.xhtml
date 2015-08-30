@@ -1,0 +1,373 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition    xmlns="http://www.w3.org/1999/xhtml"
+                   xmlns:h="http://java.sun.com/jsf/html"
+                   xmlns:f="http://java.sun.com/jsf/core"
+                   xmlns:ui="http://java.sun.com/jsf/facelets"
+                   xmlns:p="http://primefaces.org/ui"
+                   template="/WEB-INF/facelets/templates/plantilla.xhtml">
+    <ui:define name="content">    
+        <f:metadata name="viewport" content="width=device-width, initial-scale=1.0" >
+            <f:event type="preRenderView" listener="#{loginBean.permissionGeneral}"/>
+            <f:event type="preRenderView" listener="#{licitacionBean.licitacionModel.mtdListTipoProcesoConvocatoriaBd}"/>
+            <f:event type="preRenderView" listener="#{licitacionBean.licitacionModel.mtdListTipoProyectoConvocatoriaBd}"/>
+            <f:event type="preRenderView" listener="#{licitacionBean.licitacionModel.mtdListTipoEstadoConvocatoriaBd}"/>
+            <f:event type="preRenderView" listener="#{licitacionBean.licitacionModel.mtdListFormaPagoConvocatoriaBd}"/>
+            <f:event type="preRenderView" listener="#{licitacionBean.licitacionModel.mtdLlenarListTercero}"/>
+            <f:event type="preRenderView" listener="#{licitacionBean.licitacionModel.mtdLlenarListTipoDocumento}"/>
+            <f:event type="preRenderView" listener="#{licitacionBean.licitacionModel.mtdLlenarListTipoTercero}"/>
+        </f:metadata>
+        <div class="container"> 
+            <div class="col-lg-12">
+                <h:form id="form" prependId="false">
+                    <p:growl id="messages" showDetail="true" />
+                    <p:fieldset id="fld-convocatoria">
+                        <p:fieldset legend="Convocatoria" toggleable="true" toggleSpeed="100" id="fld-convo">
+                            <div class="row">
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="id-convocatoria" value="&lt;br /&gt;Identificador:" class="label-registrar" escape="false"/>
+                                    <h:inputText id="id-convocatoria"  value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.id}" disabled="true" />
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="id-entidadContratante" value="Identificacion&lt;br /&gt;Entidad Contratante:" escape="false" class="label-registrar"/>
+                                    <h:inputText id="id-entidadContratante"  disabled="true" class="label-registrar" value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.tercero.id}"/>
+                                    <p:commandLink id="btn-buscar-contratante"   update=":form2:pnl-buscar-contratante"  onclick="PF('modal-buscar-contratante').show()">
+                                        <h:graphicImage alt="" name="images/lapiz-modal.png"/>
+                                        <p:tooltip id="tool-tip-buscar-contratante" for="btn-buscar-contratante" value="Buscar Entidad Contratante" trackMouse="true" />
+                                    </p:commandLink> 
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="nombre-entidad" value="Nombre &lt;br /&gt;Entidad Contratante:" escape="false" class="label-registrar" />
+                                    <h:inputText id="nombre-entidad"  disabled="true" value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.tercero.nombre}"/>
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="descripcion" value="Descripción:" class="label-registrar"/>
+                                    <h:inputText id="descripcion"  disabled="true" value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.descripcion}"/>
+                                    <p:commandLink id="btn-descripcion-convocatoria" update=":form4:pnl-descripcion-convocatoria"  onclick="PF('modal-descripcion-convocatoria').show()">
+                                        <h:graphicImage alt="" name="images/lapiz-modal.png"/>
+                                        <p:tooltip id="tool-tip-descripcion-convocatoria" for="btn-descripcion-convocatoria" value="Agregar Descripción" trackMouse="true" />
+                                    </p:commandLink>
+                                </div>
+                            </div>
+                        </p:fieldset>
+                        <br></br>
+                        <p:fieldset legend="Información General" toggleable="true" toggleSpeed="100">
+                            <div class="row">
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="fecha-ingreso" value="Fecha Ingreso:" class="label-registrar"  />
+                                    <h:inputText id="fecha-ingreso"   disabled="true" value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.fechaRegistro}">
+                                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                    </h:inputText>
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="tipo-proceso-convocatoria" value="Tipo &lt;br /&gt; Proceso Convocatoria:" escape="false" class="label-registrar" />
+                                    <p:selectOneMenu id="tipo-proceso-convocatoria" value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.tipoProcesoConvocatoria}" style="width: 49%">
+                                        <f:selectItem itemValue="" itemLabel="Seleccione..." /> 
+                                        <f:selectItems value="#{licitacionBean.licitacionModel.listTipoProcesoConvocatoria}" var="tipoProcesoConvocatoria" itemValue="#{tipoProcesoConvocatoria.id}" itemLabel="#{tipoProcesoConvocatoria.nombre}" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="tipo-proyecto-convocatoria" value="Tipo &lt;br /&gt; Proyecto Convocatoria:" escape="false" class="label-registrar" />
+                                    <p:selectOneMenu id="tipo-proyecto-convocatoria" value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.tipoProyectoConvocatoria}" style="width: 49%">
+                                        <f:selectItem itemValue="" itemLabel="Seleccione..." /> 
+                                        <f:selectItems value="#{licitacionBean.licitacionModel.listTipoProyectoConvocatoria}" var="tipoProyectoConvocatoria" itemValue="#{tipoProyectoConvocatoria.id}" itemLabel="#{tipoProyectoConvocatoria.nombre}" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="url-convocatoria" value="Url:" class="label-registrar"  />
+                                    <h:inputText id="url-convocatoria"  value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.url}" />
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="tipo-estado-convocatoria" value="Estado Convocatoria:"  class="label-registrar" />
+                                    <p:selectOneMenu id="tipo-estado-convocatoria" value="#{licitacionBean.licitacionModel.listTipoEstadoConvocatoria}" style="width: 49%">
+                                        <f:selectItem itemValue="" itemLabel="Seleccione..." /> 
+                                        <f:selectItems value="#{licitacionBean.licitacionModel.listTipoEstadoConvocatoria}" var="estadoConvocatoria" itemValue="#{estadoConvocatoria.id}" itemLabel="#{estadoConvocatoria.nombre}" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="fecha-estado-convocatoria" value="Fecha Estado:"  class="label-registrar" />
+                                    <p:calendar id="fecha-estado-convocatoria" value="#{licitacionBean.licitacionModel.estadoConvocatoria.fecha}" pattern="dd-MM-yyyy" mask="true" />
+                                </div>
+                            </div>
+                        </p:fieldset><br/>
+                        <p:fieldset legend="Datos Adicionales" toggleable="true" toggleSpeed="100">
+                            <div class="row">
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="plazo" value="Plazo (Días):" class="label-registrar"  />
+                                    <h:inputText id="plazo"  value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.plazo}"/>
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="presupuesto-oficial" value="Presupuesto Oficial:" class="label-registrar"  />
+                                    <h:inputText id="presupuesto-oficial"  value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.presupuestoOficial}" />
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="valor-referencia" value="Valor Referencia:" class="label-registrar"  />
+                                    <h:inputText id="valor-referencia"  value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.valorReferencia}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="valor-presentado" value="Valor Presentado:" class="label-registrar"  />
+                                    <h:inputText id="valor-presentado"  value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.valorPresentado}" />
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="forma-pago-convocatoria" value="Forma Pago:"  class="label-registrar" />
+                                    <p:selectOneMenu id="forma-pago-convocatoria" value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.formaPagoConvocatoria}" style="width: 49%">
+                                        <f:selectItem itemValue="" itemLabel="Seleccione..." /> 
+                                        <f:selectItems value="#{licitacionBean.licitacionModel.listFormaPagoConvocatoria}" var="formaPagoConvocatoria" itemValue="#{formaPagoConvocatoria.id}" itemLabel="#{formaPagoConvocatoria.nombre}" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="col-md-4 input-registrar">
+                                    <h:outputLabel for="porcentaje" value="(%):" class="label-registrar"  />
+                                    <h:inputText id="porcentaje"  disabled="true" />
+                                </div>
+                            </div>
+                            <br></br>
+                            <p:fieldset legend="Adendos" toggleable="true" toggleSpeed="100" id="adendos">
+                                <p:dataTable id="tbl-adendo" reflow="true" var="adendo" value="#{licitacionBean.listAdjuntoConvocatoria}" selectionMode="single"  
+                                             rowKey="#{adendo.nombreAdjunto}" selection="#{licitacionBean.licitacionModel.adjuntoConvocatoria}" emptyMessage="No se encontraron coincidencias" style="font-size: 13px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Búsqueda avanzada: " />
+                                        <p:inputText id="globalFilter" onkeyup="PF('table-adendo').filter()" style="width:150px" placeholder="Palabra Clave"/>
+                                        <p:commandLink  id="btn-limpiar-adendo" style="float:right;" update=":form:pnl-limpiar-adendo" onclick="PF('modal-limpiar-adendo').show()">
+                                            <h:graphicImage alt="" name="images/btn-limpiar.png" style="padding-left: 10px; text-align: right;" /> 
+                                        </p:commandLink>
+                                        <p:tooltip id="tool-tip-limpiar-adendo" for="btn-limpiar-adendo" value="Limpiar" trackMouse="true"/>
+                                        <p:commandLink id="btn-actualizar-adendo" style="float:right;" disabled="true">
+                                            <h:graphicImage alt="" name="images/btn-actualizar.png" style="padding-left: 10px;"/> 
+                                        </p:commandLink>
+                                        <p:tooltip id="tool-tip-actualizar-adendo" for="btn-actualizar-adendo" value="Actualizar" trackMouse="true" />
+                                        <p:commandLink id="btn-eliminar-adendo" style="float:right;" update=":form:pnl-eliminar-adendo" onclick="PF('modal-eliminar-adendo').show()">
+                                            <h:graphicImage alt="" name="images/btn-eliminar.png" style="padding-left: 10px;"/> 
+                                        </p:commandLink>
+                                        <p:tooltip id="tool-tip-eliminar-adendo" for="btn-eliminar-adendo" value="Eliminar" trackMouse="true"/>
+                                        <p:commandLink update=":form:registrar-adendo"  actionListener="#{licitacionBean.prepararModalAdendo}" onclick="PF('modal-adendo').show()" id="btn-agregar-adendo"  style="float:right;">
+                                            <h:graphicImage alt="" name="images/btn-agregar.png" style="padding-left: 10px;"/> 
+                                        </p:commandLink> 
+                                        <p:tooltip id="tool-tip-agregar-adendo" for="btn-agregar-adendo" value="Agregar" trackMouse="true" />
+                                        <p:commandLink  id="btn-ver-detalles-adendo" process="tbl-adendo"  >
+                                            <h:graphicImage alt="" name="images/btn-ver-detalles.png" style="padding-left: 10px;"/> 
+                                        </p:commandLink>
+                                        <p:tooltip id="tool-tip-ver-detalles-adendo" for="btn-ver-detalles-adendo" value="Ver Detalles" trackMouse="true" />
+                                    </f:facet>
+                                    <p:column headerText="Nombre archivo" >
+                                        <h:outputText value="#{adendo.nombreAdjunto}"/>
+                                    </p:column>
+                                    <p:column headerText="Asunto" >
+                                        <h:outputText value="#{adendo.observacion}"/>
+                                    </p:column>
+                                </p:dataTable>
+                                <p:dialog header="Agregar Adendo" modal="true" widgetVar="modal-adendo">
+                                    <div class="container ancho" >              
+                                        <p:outputPanel id="registrar-adendo" styleClass="panel-modal-medio">
+                                            <div class="panel-modal-gris">                                    
+                                                <h3>Adendo</h3>
+                                                <center>
+                                                    <p:panel styleClass="panel-modal-interno" >
+                                                        <table class="tabla-modal">
+                                                            <tr>
+                                                                <td class="td-etiqueta">
+                                                                    <p:fileUpload 
+                                                                        label="Seleccionar" cancelLabel="Cancelar" uploadLabel="Subir"
+                                                                        mode="advanced" fileUploadListener="#{loginBean.upload}" 
+                                                                        id="file-upload" update="messages" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="color: #000; padding-right: 5px;" valign="top">
+                                                                    <h:outputLabel for="observacion" value="Observacion:"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center">
+                                                                    <p:inputTextarea id="observacion" rows="5" value="#{licitacionBean.observacion}"/>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right">
+                                                                    <p:commandButton value="Aceptar" actionListener="#{licitacionBean.guardarAdendo}" onclick="PF('modal-adendo').hide()" update="tbl-adendo" />
+                                                                </td>
+                                                            </tr>
+                                                        </table>    
+                                                    </p:panel>
+                                                </center>                                
+                                            </div>
+                                        </p:outputPanel>
+                                    </div>
+                                </p:dialog>
+                                <p:dialog header="Eliminar Adendo" modal="true" widgetVar="modal-eliminar-adendo">
+                                    <div class="container ancho" >              
+                                        <p:outputPanel id="pnl-eliminar-adendo" styleClass="panel-modal-medio">
+                                            <div class="panel-modal-gris">                                    
+                                                <h3>Eliminar</h3>
+                                                <center>
+                                                    <p:panel styleClass="panel-modal-interno" >
+                                                        <p:outputLabel>¿Está seguro que desea eliminar este registro?</p:outputLabel><br/>
+                                                        <p:commandButton value="Si" actionListener="#{licitacionBean.updateEliminarAdendo}" 
+                                                                         update="messages" onclick="PF('modal-eliminar-adendo').hide()"/>  
+                                                        <p:commandButton value="No" onclick="PF('modal-eliminar-adendo').hide()" type="button" />  
+                                                    </p:panel>
+                                                </center>                                
+                                            </div>
+                                        </p:outputPanel>
+                                    </div>
+                                </p:dialog>
+                                <p:dialog header="Limpiar Adendo" modal="true" widgetVar="modal-limpiar-adendo">
+                                    <div class="container ancho" >              
+                                        <p:outputPanel id="pnl-limpiar-adendo" styleClass="panel-modal-medio">
+                                            <div class="panel-modal-gris">                                    
+                                                <h3>Limpiar</h3>
+                                                <center>
+                                                    <p:panel styleClass="panel-modal-interno" >
+                                                        <p:outputLabel>¿Está seguro que desea limpiar la tabla?</p:outputLabel><br/>
+                                                        <p:commandButton value="Si" actionListener="#{licitacionBean.update}" 
+                                                                         update="messages" onclick="PF('modal-limpiar-adendo').hide()"/>  
+                                                        <p:commandButton value="No" onclick="PF('modal-limpiar-adendo').hide()" type="button" />  
+                                                    </p:panel>
+                                                </center>                                
+                                            </div>
+                                        </p:outputPanel>
+                                    </div>
+                                </p:dialog>
+                            </p:fieldset>
+                        </p:fieldset>
+                        <br></br>
+                        <p:fieldset style="width: 11%; float: right;">
+                            <div class="row" align="right">
+                                <p:commandLink id="btn-guardar" styleClass="btn-accion"  ajax="false" >
+                                    <h:graphicImage alt="" name="images/btn-guardar.png"/>
+                                    <p:tooltip id="tool-tip-guardar" for="btn-guardar" value="Guardar" trackMouse="true" />
+                                </p:commandLink> 
+                                <p:commandLink id="btn-cancelar" styleClass="btn-accion"  ajax="false" action="convocatoria.xhtml?faces-redirect=true">
+                                    <h:graphicImage alt="" name="images/btn-cancelar.png"/>
+                                    <p:tooltip id="tool-tip-cancelar" for="btn-cancelar" value="Cancelar" trackMouse="true" />
+                                </p:commandLink> 
+                            </div>
+                        </p:fieldset>
+
+                    </p:fieldset>                    
+                </h:form>
+                <h:form id="form2">
+                    <p:dialog header="Buscar Contratante" modal="true" widgetVar="modal-buscar-contratante" >
+                        <div class="container ancho">              
+                            <p:outputPanel id="pnl-buscar-contratante">
+                                <p:dataTable styleClass="tbl-central" reflow="true" var="tercero" value="#{licitacionBean.licitacionModel.listTercero}"  rowKey="#{tercero.id}" 
+                                             rows="10" paginatorPosition="bottom" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15" widgetVar="table-contratante" id="tbl-contratante" filteredValue="#{licitacionBean.listVaciaTercero}" filterEvent="keyup" 
+                                             emptyMessage="No se encontraron coincidencias" style="font-size: 13px;" selection="#{licitacionBean.licitacionModel.terceroSeleccion}" selectionMode="single" >
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Búsqueda avanzada: " />                                
+                                            <p:inputText id="globalFilter" onkeyup="PF('table-contratante').filter()" style="width:150px" placeholder="Palabra clave"/>
+                                            <p:commandLink id="btn-limpiar-contratante"  style="float:right;" disabled="true"><h:graphicImage alt="" name="images/btn-limpiar.png" style="padding-left: 10px; text-align: right;" /> </p:commandLink><p:tooltip id="tool-tip-limpiar-contratante" for="btn-limpiar-contratante" value="Limpiar" trackMouse="true"/>
+                                            <p:commandLink id="btn-actualizar-contratante" style="float:right;" disabled="true"><h:graphicImage alt="" name="images/btn-actualizar.png" style="padding-left: 10px;"/> </p:commandLink><p:tooltip id="tool-tip-actualizar-convocatoria" for="btn-actualizar-contratante" value="Actualizar" trackMouse="true" />
+                                            <p:commandLink id="btn-eliminar-contratante"  style="float:right;" disabled="true"><h:graphicImage alt="" name="images/btn-eliminar.png" style="padding-left: 10px;"/> </p:commandLink><p:tooltip id="tool-tip-eliminar-contratante" for="btn-eliminar-contratante" value="Eliminar" trackMouse="true"/>
+                                            <p:commandLink  id="btn-agregar-contratante" onclick="PF('modal-registrar-contratante').show()" update=":form3:pnl-registrar-contratante" style="float:right;"><h:graphicImage alt="" name="images/btn-agregar.png" style="padding-left: 10px;"/> </p:commandLink><p:tooltip id="tool-tip-agregar-contratante" for="btn-agregar-contratante" value="Agregar" trackMouse="true" />
+                                        </p:outputPanel>
+                                    </f:facet>
+                                    <p:column headerText="Id" filterBy="#{tercero.identificacionTerceros}" filterMatchMode="contains">
+                                        <h:outputText value="#{tercero.identificacionTerceros}" />
+                                    </p:column>
+                                    <p:column headerText="Nombre" sortBy="#{tercero.nombre}" filterBy="#{tercero.nombre}" filterMatchMode="contains">
+                                        <h:outputText value="#{tercero.nombre}"/>
+                                    </p:column>
+                                </p:dataTable>
+                                <br/>
+                                <p:fieldset style="width: 11%; float: right;">
+                                    <div class="row" align="right">                                        
+                                        <p:commandLink actionListener="#{licitacionBean.licitacionModel.mtdActualizarTerceroEnConvocatoria}" update=":form:fld-convocatoria" onclick="PF('modal-buscar-contratante').hide()" style="float: left; padding-left:  10%;" >
+                                            <h:graphicImage alt="" name="images/btn-guardar.png"/>
+                                        </p:commandLink>
+                                        <p:commandLink id="btn-cancelar" onclick="PF('modal-buscar-contratante').hide()" style="padding-right: 10%;">
+                                            <h:graphicImage alt="" name="images/btn-cancelar.png"/>
+                                            <p:tooltip id="tool-tip-cancelar" for="btn-cancelar" value="Cancelar" trackMouse="true" />
+                                        </p:commandLink>                                            
+                                    </div>
+                                </p:fieldset>                                
+                            </p:outputPanel>
+                        </div>
+                    </p:dialog>
+                </h:form>
+                <h:form id="form3">
+                    <p:dialog header="Registrar Contratante" modal="true" widgetVar="modal-registrar-contratante" >
+                        <div class="container ancho">              
+                            <p:outputPanel id="pnl-registrar-contratante" styleClass="panel-modal-medio" > 
+                                <div class="col-lg-12 panel-modal-gris"><br/>
+                                    <p:fieldset>
+                                        <div class="row" style="padding-left: 1%;">
+                                            <div class="col-md-4 input-registrar">
+                                                <h:outputLabel for="identificacion-modal" value="Identificacion: " class="label-registrar" escape="false" />
+                                                <h:inputText id="identificacion-modal" value="#{licitacionBean.licitacionModel.identificacionTercero.numeroIdentificacion}" style="width: 49%"/>
+                                            </div>
+                                            <div class="col-md-4 input-registrar">
+                                                <h:outputLabel for="slc-tipo-documento" value="Tipo documento: " class="label-registrar" escape="false"/>
+                                                <p:selectOneMenu id="slc-tipo-documento" value="#{licitacionBean.licitacionModel.tipoDocumento.id}" style="width: 49%;">
+                                                    <f:selectItem itemLabel="Seleccione" itemValue="" noSelectionOption="true" />
+                                                    <f:selectItems value="#{licitacionBean.licitacionModel.listTipoDocumento}" var="tipoDocumento" itemValue="#{tipoDocumento.id}" itemLabel="#{tipoDocumento.nombre}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                            <div class="col-md-4 input-registrar">
+                                                <h:outputLabel for="nombre-entidad-modal" value="Nombre Entidad&lt;br /&gt;Contratante:" escape="false" class="label-registrar" />
+                                                <h:inputText id="nombre-entidad-modal" value="#{licitacionBean.licitacionModel.tercero.nombre}" style="width: 49%;"/>
+                                            </div>
+                                            <div class="col-md-4 input-registrar">
+                                                <h:outputLabel for="slc-tipo-tercero" value="Tipo Tercero:" class="label-registrar" escape="false"/>
+                                                <p:selectOneMenu id="slc-tipo-tercero" value="#{licitacionBean.licitacionModel.tipoTercero.id}" style="width: 49%;">
+                                                    <f:selectItem itemLabel="Seleccione" itemValue="" noSelectionOption="true" />
+                                                    <f:selectItems value="#{licitacionBean.licitacionModel.listTipoTercero}" var="tipoTercero" itemValue="#{tipoTercero.id}" itemLabel="#{tipoTercero.nombre}"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </p:fieldset><br/>
+                                    <p:fieldset style="width: 11%; float: right;">
+                                        <div class="row" align="right">
+                                            <p:commandLink styleClass="btn-accion" actionListener="#{licitacionBean.mtdCreateTerceroWithTipoAsociadoBd}" update=":form3:pnl-registrar-contratante :form2:pnl-buscar-contratante" onclick="PF('modal-registrar-contratante').hide()" style="padding-left: 4%;">
+                                                <h:graphicImage alt="" name="images/btn-guardar.png" />
+                                                <f:param name="pagina" value="/view/licitacion/registrar-convocatoria" />
+                                            </p:commandLink> 
+                                            <p:commandLink id="btn-cancelar" onclick="PF('modal-registrar-contratante').hide()" style="padding-right: 5%;">
+                                                <h:graphicImage alt="" name="images/btn-cancelar.png"/>
+                                                <p:tooltip id="tool-tip-cancelar" for="btn-cancelar" value="Cancelar" trackMouse="true"/>
+                                            </p:commandLink>                                            
+                                        </div>
+                                    </p:fieldset>
+                                </div>
+                            </p:outputPanel>
+                        </div>
+                    </p:dialog>
+                </h:form>
+                <h:form id="form4">
+                    <p:dialog header="Descripción Convocatoria" modal="true" widgetVar="modal-descripcion-convocatoria" >
+                        <div class="container ancho" >              
+                            <p:outputPanel id="pnl-descripcion-convocatoria" styleClass="panel-modal-medio">
+                                <div class="panel-modal-gris-observacion">
+                                    <h3>Descripción</h3>
+                                    <center>
+                                        <p:panel styleClass="panel-modal-interno-observacion" >
+                                            <div class="input-registrar-asunto">
+                                                <h:outputLabel for="asunto" value="Asunto:" class="label-registrar-asunto" escape="false"/>
+                                                <h:inputText class="input-registrar-asunto-campo"  value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.asunto}"   />
+                                            </div> <p:inputTextarea styleClass="input-registrar-area-observacion"  rows="5" required="true" value="#{licitacionBean.licitacionModel.estadoConvocatoria.convocatoria.descripcion}"/>
+                                            <div class="row panel-modal-fielset">
+                                                <p:fieldset styleClass="fielset-modal">
+                                                    <p:commandLink  update=":form:fld-convocatoria" onclick="PF('modal-descripcion-convocatoria').hide()">
+                                                        <h:graphicImage alt="" name="images/btn-guardar.png" />
+                                                    </p:commandLink>
+                                                    <p:commandLink onclick="PF('modal-descripcion-convocatoria').hide()" >
+                                                        <h:graphicImage alt="" name="images/btn-cancelar.png" />
+                                                    </p:commandLink>
+                                                </p:fieldset> 
+                                            </div>    
+                                        </p:panel>
+                                    </center>
+                                </div>    
+                            </p:outputPanel>
+                        </div>
+                    </p:dialog>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

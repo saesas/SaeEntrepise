@@ -3,66 +3,101 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.sae.presentation.controller;
 
-import javax.ejb.EJB;
+import com.sae.persistence.domain.Convocatoria;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import com.sae.persistence.dao.ConvocatoriaFacade;
-import com.sae.persistence.dao.ConvocatoriaFacadeLocal;
-import com.sae.persistence.domain.Convocatoria;
-import java.util.Date;
+import com.sae.persistence.service.ConvocatoriaServiceLocal;
+import com.sae.presentation.model.ConvocatoriaModel;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import javax.ejb.EJB;
+import javax.inject.Inject;
 
 /**
  *
- * @author Hector Ivan
+ * @author SAE2
  */
 @ManagedBean
 @ViewScoped
 public class ConvocatoriaController {
+
+    /**
+     * Creates a new instance of ConvocatoriaController
+     */
+    public ConvocatoriaController() {
+    }
+
     @EJB
-    private ConvocatoriaFacadeLocal convocatoriaFacade;
+    ConvocatoriaServiceLocal convocatoriaService;
 
-     private Convocatoria convocatoria;
-    private List< Convocatoria > convocatorias;
+    private ConvocatoriaModel convocatoriaModel;
 
-    public Convocatoria getConvocatoria() {
-        return convocatoria;
+    private List<ConvocatoriaModel> convocatorias;
+   
+    private List<ConvocatoriaModel> convocatoriasFiltro;
+
+    @PostConstruct
+    public void init() {
+        setConvocatoriaModel(new ConvocatoriaModel());
+        setConvocatorias(new ArrayList<ConvocatoriaModel>());
     }
 
-    public void setConvocatoria(Convocatoria convocatoria) {
-        this.convocatoria = convocatoria;
+    public void mtdLlenarListConvocatorias() {
+        List<Convocatoria> convocatoriasAux = convocatoriaService.getLlenarListConvocatoria(1);
+        mtdConversionConvocatoria(convocatoriasAux);
     }
 
-    public List<Convocatoria> getConvocatorias() {
+    public void mtdConversionConvocatoria(List<Convocatoria> convocatoriasAux) {
+        for (int i = 0; i < convocatoriasAux.size(); i++) {
+            Convocatoria convocatoriaAux = convocatoriasAux.get(i);
+            this.getConvocatorias().add(new ConvocatoriaModel(convocatoriaAux.getId(), convocatoriaAux.getCodigo(), convocatoriaAux.getEntidadContratante(), "Enitdad Contratante", convocatoriaAux.getIdTipoProceso().getId(), convocatoriaAux.getIdTipoProceso().getNombre(), convocatoriaAux.getUrl(), convocatoriaAux.getEstadoConvocatoriaList().get(0).getIdEstadoConvocatoria().getId(), convocatoriaAux.getEstadoConvocatoriaList().get(0).getIdEstadoConvocatoria().getNombre(),convocatoriaAux.getFechaRegistro()));
+        }
+    }
+
+    /**
+     * @return the convocatorias
+     */
+    public List<ConvocatoriaModel> getConvocatorias() {
         return convocatorias;
     }
 
-    public void setConvocatorias(List<Convocatoria> convocatorias) {
+    /**
+     * @param convocatorias the convocatorias to set
+     */
+    public void setConvocatorias(List<ConvocatoriaModel> convocatorias) {
         this.convocatorias = convocatorias;
     }
 
-    
-    @PostConstruct
-    public void init() {
-        convocatoria = new Convocatoria();
+    /**
+     * @return the convocatoriasFiltro
+     */
+    public List<ConvocatoriaModel> getConvocatoriasFiltro() {
+        return convocatoriasFiltro;
     }
-     
-    public void listar() {
-        convocatorias = convocatoriaFacade.findAll();
+
+    /**
+     * @param convocatoriasFiltro the convocatoriasFiltro to set
+     */
+    public void setConvocatoriasFiltro(List<ConvocatoriaModel> convocatoriasFiltro) {
+        this.convocatoriasFiltro = convocatoriasFiltro;
     }
-     
-    public void agregar() {
-        convocatoriaFacade.create(convocatoria);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro agregado.",  "Se añadió la unidad en " + new Date());  
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        convocatoria = new Convocatoria();
-        listar();
+
+    /**
+     * @return the convocatoriaModel
+     */
+    public ConvocatoriaModel getConvocatoriaModel() {
+        return convocatoriaModel;
     }
-    
+
+    /**
+     * @param convocatoriaModel the convocatoriaModel to set
+     */
+    public void setConvocatoriaModel(ConvocatoriaModel convocatoriaModel) {
+        this.convocatoriaModel = convocatoriaModel;
+    }
+
 }

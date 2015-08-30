@@ -180,6 +180,12 @@
                                 <h:outputText value="IdFormaPago"/>
                             </f:facet>
                             <h:outputText value="#{item.idFormaPago}"/>
+                        </h:column> 
+                         <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="IdMatrizRiesgo"/>
+                            </f:facet>
+                             <h:outputText value="#{item.matrizRiesgoList.get(0)}"/>
                         </h:column>    
                     </h:dataTable>
 
